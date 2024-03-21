@@ -1,0 +1,5 @@
+node_modules/
+.env
+.env/
+.vim/
+__pycache__/
