@@ -15,6 +15,9 @@ npm i --force
 
 # Usage
 
+You can use the `start.sh` script to run both the backend and the frontend at the same time(requires tmux)
+Alternatively, you can run the backend and frontend separately.
+
 For the backend, run the following command:
 
 ```bash
