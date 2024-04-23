@@ -1,0 +1,18 @@
+# .tmuxinator.yml
+
+name: dev
+root: ~/projects/gym-tracker
+
+windows:
+  - editor: nvim .
+  - server:
+      layout: main-horizontal
+      panes:
+        - backend:
+          - source .env/bin/activate
+          - cd backend
+          - ./manage.py runserver
+        - frontend:
+          - cd frontend
+          - npm run dev
+
