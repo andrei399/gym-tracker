@@ -2,53 +2,37 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class MuscleGroup:
-    CHEST = "C"
-    BACK = "B"
-    SHOULDERS = "S"
-    ARMS = "A"
-    LEGS = "L"
-    CORE = "Co"
-
-    CHOICES = [
-        (CHEST, _("Chest")),
-        (BACK, _("Back")),
-        (SHOULDERS, _("Shoulders")),
-        (ARMS, _("Arms")),
-        (LEGS, _("Legs")),
-        (CORE, _("Core")),
-    ]
+class MuscleGroup(models.TextChoices):
+    CHEST = "C", _("Chest")
+    BACK = "B", _("Back")
+    SHOULDERS = "S", _("Shoulders")
+    ARMS = "A", _("Arms")
+    LEGS = "L", _("Legs")
+    CORE = "Co", _("Core")
 
 
 class DefinedExercise(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    muscle_group = models.CharField(max_length=2, choices=MuscleGroup.CHOICES)
+    muscle_group = models.CharField(max_length=2, choices=MuscleGroup.choices)
 
 
 class Routine(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
 
-    FULL_BODY = "FB"
-    UPPER_BODY = "UB"
-    LOWER_BODY = "LB"
-    PUSH = "Ph"
-    PULL = "Pl"
-    CARDIO = "Ca"
-    REST_DAY = "Re"
+    class RoutineChoices(models.TextChoices):
+        FULL_BODY = "FB", _("Full Body")
+        UPPER_BODY = "UB", _("Upper Body")
+        LOWER_BODY = "LB", _("Lower Body")
+        PUSH = "Ph", _("Push")
+        PULL = "Pl", _("Pull")
+        CARDIO = "Ca", _("Cardio")
+        REST_DAY = "Re", _("Rest Day")
 
-    CHOICES = [
-        (FULL_BODY, _("Full Body")),
-        (UPPER_BODY, _("Upper Body")),
-        (LOWER_BODY, _("Lower Body")),
-        (PUSH, _("Push")),
-        (PULL, _("Pull")),
-        (CARDIO, _("Cardio")),
-        (REST_DAY, _("Rest Day")),
-    ] + MuscleGroup.CHOICES
-
-    type = models.CharField(max_length=2, choices=CHOICES)
+    type = models.CharField(
+        max_length=2, choices=RoutineChoices.choices + MuscleGroup.choices
+    )
     duration = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey("auth.User", on_delete=models.PROTECT)
